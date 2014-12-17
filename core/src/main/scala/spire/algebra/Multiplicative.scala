@@ -5,41 +5,41 @@ import scala.annotation.tailrec
 
 object Multiplicative {
   def apply[A](s: Semigroup[A]): MultiplicativeSemigroup[A] = new MultiplicativeSemigroup[A] {
-    def times(x: A, y: A): A = s.op(x, y)
+    def times(x: A, y: A): A = s.combine(x, y)
   }
 
   def apply[A](s: CSemigroup[A]): MultiplicativeCSemigroup[A] = new MultiplicativeCSemigroup[A] {
-    def times(x: A, y: A): A = s.op(x, y)
+    def times(x: A, y: A): A = s.combine(x, y)
   }
 
   def apply[A](m: Monoid[A]): MultiplicativeMonoid[A] = new MultiplicativeMonoid[A] {
-    def times(x: A, y: A): A = m.op(x, y)
-    def one = m.id
+    def times(x: A, y: A): A = m.combine(x, y)
+    def one = m.empty
   }
 
   def apply[A](m: CMonoid[A]): MultiplicativeCMonoid[A] = new MultiplicativeCMonoid[A] {
-    def times(x: A, y: A): A = m.op(x, y)
-    def one = m.id
+    def times(x: A, y: A): A = m.combine(x, y)
+    def one = m.empty
   }
 
   def apply[A](g: Group[A]): MultiplicativeGroup[A] = new MultiplicativeGroup[A] {
-    def times(x: A, y: A): A = g.op(x, y)
-    def div(x: A, y: A): A = g.op(x, g.inverse(y))
-    def one: A = g.id
+    def times(x: A, y: A): A = g.combine(x, y)
+    def div(x: A, y: A): A = g.remove(x, y)
+    def one: A = g.empty
     override def reciprocal(x: A): A = g.inverse(x)
   }
 
   def apply[A](g: AbGroup[A]): MultiplicativeAbGroup[A] = new MultiplicativeAbGroup[A] {
-    def times(x: A, y: A): A = g.op(x, y)
-    def div(x: A, y: A): A = g.op(x, g.inverse(y))
-    def one: A = g.id
+    def times(x: A, y: A): A = g.combine(x, y)
+    def div(x: A, y: A): A = g.remove(x, y)
+    def one: A = g.empty
     override def reciprocal(x: A): A = g.inverse(x)
   }
 }
 
 trait MultiplicativeSemigroup[@spec(Byte, Short, Int, Long, Float, Double) A] extends Any {
   def multiplicative: Semigroup[A] = new Semigroup[A] {
-    def op(x: A, y: A): A = times(x, y)
+    def combine(x: A, y: A): A = times(x, y)
   }
 
   def times(x: A, y: A): A
@@ -73,14 +73,14 @@ trait MultiplicativeSemigroup[@spec(Byte, Short, Int, Long, Float, Double) A] ex
 
 trait MultiplicativeCSemigroup[@spec(Byte, Short, Int, Long, Float, Double) A] extends Any with MultiplicativeSemigroup[A] {
   override def multiplicative: CSemigroup[A] = new CSemigroup[A] {
-    def op(x: A, y: A): A = times(x, y)
+    def combine(x: A, y: A): A = times(x, y)
   }
 }
 
 trait MultiplicativeMonoid[@spec(Byte, Short, Int, Long, Float, Double) A] extends Any with MultiplicativeSemigroup[A] {
   override def multiplicative: Monoid[A] = new Monoid[A] {
-    def id = one
-    def op(x: A, y: A): A = times(x, y)
+    def empty: A = one
+    def combine(x: A, y: A): A = times(x, y)
   }
 
   def one: A
@@ -104,15 +104,15 @@ trait MultiplicativeMonoid[@spec(Byte, Short, Int, Long, Float, Double) A] exten
 
 trait MultiplicativeCMonoid[@spec(Byte, Short, Int, Long, Float, Double) A] extends Any with MultiplicativeMonoid[A] with MultiplicativeCSemigroup[A] {
   override def multiplicative: CMonoid[A] = new CMonoid[A] {
-    def id = one
-    def op(x: A, y: A): A = times(x, y)
+    def empty: A = one
+    def combine(x: A, y: A): A = times(x, y)
   }
 }
 
 trait MultiplicativeGroup[@spec(Byte, Short, Int, Long, Float, Double) A] extends Any with MultiplicativeMonoid[A] {
   override def multiplicative: Group[A] = new Group[A] {
-    def id = one
-    def op(x: A, y: A): A = times(x, y)
+    def empty: A = one
+    def combine(x: A, y: A): A = times(x, y)
     def inverse(x: A): A = reciprocal(x)
   }
 
@@ -132,8 +132,8 @@ trait MultiplicativeGroup[@spec(Byte, Short, Int, Long, Float, Double) A] extend
 
 trait MultiplicativeAbGroup[@spec(Byte, Short, Int, Long, Float, Double) A] extends Any with MultiplicativeGroup[A] with MultiplicativeCMonoid[A] {
   override def multiplicative: AbGroup[A] = new AbGroup[A] {
-    def id = one
-    def op(x: A, y: A): A = times(x, y)
+    def empty: A = one
+    def combine(x: A, y: A): A = times(x, y)
     def inverse(x: A): A = reciprocal(x)
   }
 }

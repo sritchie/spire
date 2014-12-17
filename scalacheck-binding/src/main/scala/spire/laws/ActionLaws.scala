@@ -44,7 +44,7 @@ trait ActionLaws[G, A] extends Laws {
     parent = Some(semigroupAction),
 
     "identity" → forAll { (a: A) =>
-      (G0.id |+|> a) === a
+      (G0.empty |+|> a) === a
     }
   )
 

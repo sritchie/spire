@@ -78,8 +78,9 @@ object AutoAlgebraExample extends App {
   val ys = List(3, 4).asJava
   val zs = List(5, 6).asJava
   assert(((xs |+| ys) |+| zs) === (xs |+| (ys |+| zs)))
-  assert((xs |+| Monoid[java.util.List[Int]].id) === xs)
-  assert((Monoid[java.util.List[Int]].id |+| xs) === xs)
+  val m = Monoid[java.util.List[Int]]
+  assert((xs |+| m.empty) === xs)
+  assert((m.empty |+| xs) === xs)
 
   // As a final example, we'll recreate some instances for Scala types. These
   // already exist in Spire, so this is just to demonstrate Auto's utility.

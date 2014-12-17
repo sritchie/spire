@@ -2,6 +2,8 @@ package spire.algebra
 
 import scala.{ specialized => spec }
 
+import spire.algebra.Sign.{ Positive, Zero, Negative }
+
 /**
  * A (left) semigroup/monoid/group action of `G` on `P` is simply the implementation of
  * a method `actl(g, p)`, or `g +> p` in additive notation, such that:
@@ -39,4 +41,16 @@ trait MultiplicativeAction[@spec(Int) P, G] extends Any { self =>
 
   def gtimesl(g: G, p: P): P
   def gtimesr(p: P, g: G): P
+}
+
+object MultiplicativeAction {
+  implicit def SignAction[A](implicit A: AdditiveGroup[A]): MultiplicativeAction[A, Sign] =
+    new MultiplicativeAction[A, Sign] {
+      def gtimesl(s: Sign, a: A): A = s match {
+        case Positive => a
+        case Negative => A.negate(a)
+        case Zero => A.zero
+      }
+      def gtimesr(a: A, s: Sign): A = gtimesl(s, a)
+    }
 }

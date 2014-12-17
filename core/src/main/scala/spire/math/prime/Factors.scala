@@ -110,7 +110,7 @@ case class Factors(factors: Map[SafeLong, Int], sign: Sign)
 
   def /(rhs: Factors): Factors = {
     val (sign, nn, dd, cc) = qm(rhs)
-    if (dd.isEmpty) Factors(nn, sign) else Factors((prod(nn) * sign) / prod(dd))
+    if (dd.isEmpty) Factors(nn, Sign(sign)) else Factors((prod(nn) * sign) / prod(dd))
   }
 
   def /(rhs: SafeLong): Factors =
@@ -136,7 +136,7 @@ case class Factors(factors: Map[SafeLong, Int], sign: Sign)
   def /%(rhs: Factors): (Factors, Factors) = {
     val (sign, nn, dd, cc) = qm(rhs)
     if (dd.isEmpty) {
-      (Factors(nn, sign), Factors.zero)
+      (Factors(nn, Sign(sign)), Factors.zero)
     } else {
       val (q, m) = prod(nn) /% prod(dd)
       (Factors(q) * sign, Factors(m * prod(cc)) * lhs.signum)

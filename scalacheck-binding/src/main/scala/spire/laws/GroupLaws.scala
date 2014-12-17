@@ -29,11 +29,11 @@ trait GroupLaws[A] extends Laws {
     "associative" → forAll((x: A, y: A, z: A) =>
       ((x |+| y) |+| z) === (x |+| (y |+| z))
     ),
-    "combinen(a, 1) === a" → forAll((a: A) =>
-      A.combinen(a, 1) === a
+    "combineN(a, 1) === a" → forAll((a: A) =>
+      A.combineN(a, 1) === a
     ),
-    "combinen(a, 2) === a |+| a" → forAll((a: A) =>
-      A.combinen(a, 2) === (a |+| a)
+    "combineN(a, 2) === a |+| a" → forAll((a: A) =>
+      A.combineN(a, 2) === (a |+| a)
     )
   )
 
@@ -41,19 +41,19 @@ trait GroupLaws[A] extends Laws {
     name = "monoid",
     parent = Some(semigroup),
     "left identity" → forAll((x: A) =>
-      (A.id |+| x) === x
+      (A.empty |+| x) === x
     ),
     "right identity" → forAll((x: A) =>
-      (x |+| A.id) === x
+      (x |+| A.empty) === x
     ),
-    "combinen(a, 0) === id" → forAll((a: A) =>
-      A.combinen(a, 0) === A.id
+    "combineN(a, 0) === id" → forAll((a: A) =>
+      A.combineN(a, 0) === A.empty
     ),
-    "combine(Nil) === id" → forAll((a: A) =>
-      A.combine(Nil) === A.id
+    "combineAll(Nil) === id" → forAll((a: A) =>
+      A.combineAll(Nil) === A.empty
     ),
-    "isId" → forAll((x: A) =>
-      (x === A.id) === (x.isId)
+    "isEmpty" → forAll((x: A) =>
+      (x === A.empty) === (x.isEmpty)
     )
   )
 
@@ -61,10 +61,10 @@ trait GroupLaws[A] extends Laws {
     name = "group",
     parent = Some(monoid),
     "left inverse" → forAll((x: A) =>
-      A.id === (x.inverse |+| x)
+      A.empty === (x.inverse |+| x)
     ),
     "right inverse" → forAll((x: A) =>
-      A.id === (x |+| x.inverse)
+      A.empty === (x |+| x.inverse)
     )
   )
 

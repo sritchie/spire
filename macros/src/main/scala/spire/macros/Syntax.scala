@@ -8,27 +8,85 @@ object Ops extends machinist.Ops {
 
   def uesc(c: Char): String = "$u%04X".format(c.toInt)
 
-  val operatorNames: Map[String, String] =
-    machinist.DefaultOps.operatorNames ++ Map(
-      // square root
-      (uesc('√'), "sqrt"),
+  val operatorNames = Map(
+    // Eq (=== =!=)
+    ("$eq$eq$eq", "eqv"),
+    ("$eq$bang$eq", "neqv"),
 
-      // equality, comparisons
-      (uesc('≡'), "eqv"),
-      (uesc('≠'), "neqv"),
-      (uesc('≤'), "lteqv"),
-      (uesc('≥'), "gteqv"),
+    // PartialOrder (> >= < <=)
+    ("$greater", "gt"),
+    ("$greater$eq", "gteqv"),
+    ("$less", "lt"),
+    ("$less$eq", "lteqv"),
 
-      // lattices/heyting
-      (uesc('∧'), "meet"),
-      (uesc('∨'), "join"),
-      (uesc('⊃'), "imp"),
-      (uesc('¬'), "complement"),
+    // Semigroup (|+| |-|)
+    ("$bar$plus$bar", "combine"),
+    ("$bar$minus$bar", "remove"),
 
-      // bool
-      (uesc('⊻'), "xor"),
-      (uesc('⊼'), "nand"),
-      (uesc('⊽'), "nor"))
+    // Ring (unary_- + - * **)
+    ("unary_$minus", "negate"),
+    ("$plus", "plus"),
+    ("$minus", "minus"),
+    ("$times", "times"),
+    ("$times$times", "pow"),
+
+    // EuclideanRing (/~ % /%)
+    ("$div$tilde", "quot"),
+    ("$percent", "mod"),
+    ("$div$percent", "quotmod"),
+
+    // Field (/)
+    ("$div", "div"),
+
+    // BooleanAlgebra (^ | & ~)
+    ("$up", "xor"),
+    ("$bar", "or"),
+    ("$amp", "and"),
+    ("unary_$tilde", "complement"),
+
+    // BitString (<< >> >>>)
+    ("$less$less", "leftShift"),
+    ("$greater$greater$greater", "rightShift"),
+    ("$greater$greater", "signedRightShift"),
+
+    // VectorSpace (*: :* :/ ⋅)
+    ("$times$colon", "timesl"),
+    ("$colon$times", "timesr"),
+    ("$colon$div", "divr"),
+    ("$u22C5", "dot"),
+
+    // GroupAction (|+|> <|+| +> <+ *> <*)
+    ("$bar$plus$bar$greater", "actl"),
+    ("$less$bar$plus$bar", "actr"),
+    ("$plus$greater", "gplusl"),
+    ("$less$plus", "gplusr"),
+    ("$times$greater", "gtimesl"),
+    ("$less$times", "gtimesr"),
+
+    // Torsor (<|-|> <-> </>)
+    ("$less$bar$minus$bar$greater", "pdiff"),
+    ("$less$minus$greater", "pminus"),
+    ("$less$div$greater", "pdiv"),
+
+    // square root
+    (uesc('√'), "sqrt"),
+
+    // equality, comparisons
+    (uesc('≡'), "eqv"),
+    (uesc('≠'), "neqv"),
+    (uesc('≤'), "lteqv"),
+    (uesc('≥'), "gteqv"),
+
+    // lattices/heyting
+    (uesc('∧'), "meet"),
+    (uesc('∨'), "join"),
+    (uesc('⊃'), "imp"),
+    (uesc('¬'), "complement"),
+
+    // bool
+    (uesc('⊻'), "xor"),
+    (uesc('⊼'), "nand"),
+    (uesc('⊽'), "nor"))
 
   def unopWithEv2[Ev1, R](c: Context)(ev1: c.Expr[Ev1]): c.Expr[R] = {
     import c.universe._

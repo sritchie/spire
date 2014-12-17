@@ -35,7 +35,7 @@ object Auto {
     def order[A]: Order[A] = macro JavaAutoMacros.orderImpl[A]
 
     object collection {
-      def monoid[A](empty: A): Monoid[A] = macro JavaAutoMacros.collectionMonoidImpl[A]
+      def monoid[A](id: A): Monoid[A] = macro JavaAutoMacros.collectionMonoidImpl[A]
     }
   }
 }
@@ -269,7 +269,7 @@ object ScalaAutoMacros {
     val ops = ScalaAlgebra[c.type](c)
     c.universe.reify {
       new Semigroup[A] {
-        def op(x: A, y: A): A = ops.plusplus[A].splice
+        def combine(x: A, y: A): A = ops.plusplus[A].splice
       }
     }
   }
@@ -278,8 +278,8 @@ object ScalaAutoMacros {
     val ops = ScalaAlgebra[c.type](c)
     c.universe.reify {
       new Monoid[A] {
-        def id: A = z.splice
-        def op(x: A, y: A): A = ops.plusplus[A].splice
+        def empty: A = z.splice
+        def combine(x: A, y: A): A = ops.plusplus[A].splice
       }
     }
   }
@@ -312,15 +312,15 @@ object JavaAutoMacros {
   def orderImpl[A: c.WeakTypeTag](c: Context): c.Expr[Order[A]] =
     JavaAlgebra[c.type](c).Order[A]()
 
-  def collectionMonoidImpl[A: c.WeakTypeTag](c: Context)(empty: c.Expr[A]): c.Expr[Monoid[A]] = {
+  def collectionMonoidImpl[A: c.WeakTypeTag](c: Context)(id: c.Expr[A]): c.Expr[Monoid[A]] = {
     val ops = JavaAlgebra[c.type](c)
     val addx = ops.binop[Unit]("addAll", "z", "x")
     val addy = ops.binop[Unit]("addAll", "z", "y")
     c.universe.reify {
       new Monoid[A] {
-        def id: A = empty.splice
-        def op(x: A, y: A): A = {
-          val z = id
+        def empty: A = id.splice
+        def combine(x: A, y: A): A = {
+          val z = empty
           addx.splice
           addy.splice
           z

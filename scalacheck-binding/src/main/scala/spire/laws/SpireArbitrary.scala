@@ -117,13 +117,13 @@ object SpireArbitrary {
   implicit def FreeMonoidArbitrary[A: Arbitrary]: Arbitrary[FreeMonoid[A]] =
     Arbitrary(for {
       terms <- arbitrary[List[A]].map(_.map(FreeMonoid(_)))
-    } yield terms.foldLeft(FreeMonoid.id[A])(_ |+| _))
+    } yield terms.foldLeft(FreeMonoid.empty[A])(_ |+| _))
 
   implicit def FreeGroupArbitrary[A: Arbitrary]: Arbitrary[FreeGroup[A]] =
     Arbitrary(for {
       terms <- arbitrary[List[Either[A, A]]]
     } yield {
-      terms.foldLeft(FreeGroup.id[A]) {
+      terms.foldLeft(FreeGroup.empty[A]) {
         case (acc, Left(a)) => acc |-| FreeGroup(a)
         case (acc, Right(a)) => acc |+| FreeGroup(a)
       }
@@ -141,8 +141,8 @@ object SpireArbitrary {
       terms <- arbitrary[List[FreeAbTerm[A]]]
     } yield {
       terms.map { case FreeAbTerm(a, n) =>
-        Group[FreeAbGroup[A]].combinen(FreeAbGroup(a), n)
-      }.foldLeft(FreeAbGroup.id[A])(_ |+| _)
+        Group[FreeAbGroup[A]].combineN(FreeAbGroup(a), n)
+      }.foldLeft(FreeAbGroup.empty[A])(_ |+| _)
     })
 }
 

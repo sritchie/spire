@@ -198,8 +198,8 @@ private final class ArrayOrder[@spec(Int,Float,Long,Double) A: Order]
 @SerialVersionUID(0L)
 private final class ArrayMonoid[@spec(Int,Float,Long,Double) A: ClassTag]
     extends Monoid[Array[A]] with Serializable {
-  def id = new Array[A](0)
-  def op(x: Array[A], y: Array[A]) = ArraySupport.concat(x, y)
+  def empty = new Array[A](0)
+  def combine(x: Array[A], y: Array[A]) = ArraySupport.concat(x, y)
 }
 
 @SerialVersionUID(0L)

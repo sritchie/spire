@@ -400,11 +400,11 @@ package object math {
   final def ulp(x: Double): Double = Math.ulp(x)
   final def ulp(x: Float): Double = Math.ulp(x)
 
-  final def hypot[@spec(Float, Double) A](x: A, y: A)
-    (implicit f: Field[A], n: NRoot[A], o: Order[A]): A = {
+  final def hypot[@spec(Float, Double) A](x: A, y: A)(implicit f: Field[A], n: NRoot[A], o: Order[A]): A = {
     import spire.implicits._
-    if (x > y) x.abs * (1 + (y/x)**2).sqrt
-    else y.abs * (1 + (x/y)**2).sqrt
+    def abs(n: A): A = if (n < f.zero) -n else n
+    if (x > y) abs(x) * (1 + (y/x)**2).sqrt
+    else abs(y) * (1 + (x/y)**2).sqrt
   }
 
   // ugly internal scala.math.ScalaNumber utilities follow
