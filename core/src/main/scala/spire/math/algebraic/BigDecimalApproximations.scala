@@ -100,7 +100,7 @@ object BigDecimalApproximations {
         if (x < 0 && k % 2 == 0 && a.sign == Zero) {
           BigDecimal(0)
         } else {
-          NRoot.nroot(x, k, new MathContext(ub + bits + 1))
+          spire.math.nroot(x, k, new MathContext(ub + bits + 1))
         }
     }
   }
@@ -146,7 +146,7 @@ object BigDecimalApproximations {
       case KRoot(a, k) => {
         val ctxt = mc + 1
         val sub = apply(a, ctxt)
-        NRoot.nroot(sub, k, ctxt)
+        spire.math.nroot(sub, k, ctxt)
       }
 
       case IntLit(n) => BigDecimal(n, mc)

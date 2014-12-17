@@ -162,4 +162,12 @@ package object algebra {
 
   type Field[A] = _root_.algebra.ring.Field[A]
   val Field = _root_.algebra.ring.Field
+
+  type IsReal[A] = _root_.algebra.number.IsReal[A]
+  val IsReal = _root_.algebra.number.IsReal
+
+  type IsIntegral[A] = _root_.algebra.number.IsIntegral[A]
+
+  type NRoot[A] = _root_.algebra.number.NRoot[A]
+  val NRoot = _root_.algebra.number.NRoot
 }
