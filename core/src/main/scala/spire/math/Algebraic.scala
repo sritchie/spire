@@ -17,7 +17,7 @@
  */
 package spire.math
 
-import spire.algebra.{Eq, EuclideanRing, Field, IsReal, NRoot, Order, Ring, Sign, Signed}
+import spire.algebra.{Eq, EuclideanRing, Field, Gcd, IsReal, NRoot, Order, Ring, Sign, Signed}
 import spire.algebra.Sign.{ Positive, Negative, Zero }
 import java.math.{ MathContext, BigInteger, BigDecimal => BigDec }
 import scala.math.{ ScalaNumber, ScalaNumericConversions }
@@ -108,10 +108,11 @@ private[math] trait AlgebraicIsRing extends Ring[Algebraic] {
   override def fromInt(n: Int): Algebraic = Algebraic(n)
 }
 
-private[math] trait AlgebraicIsEuclideanRing extends EuclideanRing[Algebraic] with AlgebraicIsRing {
+private[math] trait AlgebraicIsEuclideanRing extends EuclideanRing[Algebraic] with Gcd[Algebraic] with AlgebraicIsRing {
   def quot(a: Algebraic, b: Algebraic): Algebraic = a /~ b
   def mod(a: Algebraic, b: Algebraic): Algebraic = a % b
-  def gcd(a: Algebraic, b: Algebraic): Algebraic = euclid(a, b)(Eq[Algebraic])
+  def gcd(a: Algebraic, b: Algebraic): Algebraic = euclid(a, b)(Eq[Algebraic], this)
+  def lcm(a: Algebraic, b: Algebraic): Algebraic = (a / gcd(a, b)) * b
 }
 
 private[math] trait AlgebraicIsField extends Field[Algebraic] with AlgebraicIsEuclideanRing {

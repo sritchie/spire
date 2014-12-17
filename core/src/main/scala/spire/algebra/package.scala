@@ -138,4 +138,28 @@ package object algebra {
       override def reciprocal(x: A): A = g.inverse(x)
     }
   }
+
+  type Semiring[A] = _root_.algebra.ring.Semiring[A]
+  val Semiring = _root_.algebra.ring.Semiring
+
+  type Rig[A] = _root_.algebra.ring.Rig[A]
+  val Rig = _root_.algebra.ring.Rig
+
+  type CRig[A] = _root_.algebra.ring.CommutativeRig[A]
+  val CRig = _root_.algebra.ring.CommutativeRig
+
+  type Rng[A] = _root_.algebra.ring.Rng[A]
+  val Rng = _root_.algebra.ring.Rng
+
+  type Ring[A] = _root_.algebra.ring.Ring[A]
+  val Ring = _root_.algebra.ring.Ring
+
+  type CRing[A] = _root_.algebra.ring.CommutativeRing[A]
+  val CRing = _root_.algebra.ring.CommutativeRing
+
+  type EuclideanRing[A] = _root_.algebra.ring.EuclideanRing[A]
+  val EuclideanRing = _root_.algebra.ring.EuclideanRing
+
+  type Field[A] = _root_.algebra.ring.Field[A]
+  val Field = _root_.algebra.ring.Field
 }

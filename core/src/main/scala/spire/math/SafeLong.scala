@@ -5,7 +5,7 @@ import scala.annotation.tailrec
 
 import spire.macros.Checked
 
-import spire.algebra.{EuclideanRing, IsIntegral, NRoot, Order, Ring, Signed}
+import spire.algebra.{EuclideanRing, Gcd, IsIntegral, NRoot, Order, Ring, Signed}
 import spire.std.long._
 import spire.std.bigInt._
 
@@ -130,6 +130,7 @@ sealed trait SafeLong extends ScalaNumber with ScalaNumericConversions with Orde
   final def abs: SafeLong = if (signum < 0) -this else this
 
   def gcd(that: SafeLong): SafeLong
+  def lcm(that: SafeLong): SafeLong = (this / (this gcd that)) * that
 
   def unary_-(): SafeLong
 
@@ -419,11 +420,12 @@ private[math] trait SafeLongIsRing extends Ring[SafeLong] {
   override def fromInt(n: Int): SafeLong = SafeLong(n)
 }
 
-private[math] trait SafeLongIsEuclideanRing extends EuclideanRing[SafeLong] with SafeLongIsRing {
+private[math] trait SafeLongIsEuclideanRing extends EuclideanRing[SafeLong] with Gcd[SafeLong] with SafeLongIsRing {
   def quot(a:SafeLong, b:SafeLong): SafeLong = a / b
   def mod(a:SafeLong, b:SafeLong): SafeLong = a % b
   override def quotmod(a:SafeLong, b:SafeLong): (SafeLong, SafeLong) = a /% b
   def gcd(a:SafeLong, b:SafeLong): SafeLong = a gcd b
+  def lcm(a:SafeLong, b:SafeLong): SafeLong = a lcm b
 }
 
 private[math] trait SafeLongIsNRoot extends NRoot[SafeLong] {

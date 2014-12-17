@@ -157,7 +157,7 @@ abstract class AutoAlgebra extends AutoOps { ops =>
         def negate(x: A): A = ops.negate[A].splice
         def quot(x: A, y: A): A = ops.quot[A].splice
         def mod(x: A, y: A): A = ops.mod[A]().splice
-        def gcd(x: A, y: A): A = euclid(x, y)(ev.splice)
+        //def gcd(x: A, y: A): A = euclid(x, y)(ev.splice)
       }
     }
   }
@@ -174,7 +174,7 @@ abstract class AutoAlgebra extends AutoOps { ops =>
         def negate(x: A): A = ops.negate[A].splice
         def quot(x: A, y: A): A = ops.div[A].splice
         def mod(x: A, y: A): A = ops.mod[A](z).splice
-        def gcd(x: A, y: A): A = euclid(x, y)(ev.splice)
+        //def gcd(x: A, y: A): A = euclid(x, y)(ev.splice)
         def div(x: A, y: A): A = ops.div[A].splice
       }
     }

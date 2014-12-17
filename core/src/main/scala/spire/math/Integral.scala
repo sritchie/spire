@@ -2,10 +2,10 @@ package spire.math
 
 import scala.{specialized => sp}
 
-import spire.algebra.{EuclideanRing, IsReal}
+import spire.algebra.{EuclideanRing, Gcd, IsReal}
 import spire.std._
 
-trait Integral[@sp(Int,Long) A] extends EuclideanRing[A] with ConvertableFrom[A] with ConvertableTo[A] with IsReal[A]
+trait Integral[@sp(Int,Long) A] extends EuclideanRing[A] with Gcd[A] with ConvertableFrom[A] with ConvertableTo[A] with IsReal[A]
 
 object Integral {
   implicit final val IntIsIntegral = new IntIsIntegral

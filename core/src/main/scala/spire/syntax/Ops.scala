@@ -211,9 +211,6 @@ final class EuclideanRingOps[A](lhs:A)(implicit ev:EuclideanRing[A]) {
   def %(rhs:A): A = macro Ops.binop[A, A]
   def /%(rhs:A): (A, A) = macro Ops.binop[A, (A, A)]
 
-  def gcd(rhs:A): A = macro Ops.binop[A, A]
-  def lcm(rhs:A): A = macro Ops.binop[A, A]
-
   // TODO: This is a bit
   def /~(rhs:Int): A = macro Ops.binopWithSelfLift[Int, Ring[A], A]
   def %(rhs:Int): A = macro Ops.binopWithSelfLift[Int, Ring[A], A]
@@ -226,6 +223,11 @@ final class EuclideanRingOps[A](lhs:A)(implicit ev:EuclideanRing[A]) {
   def /~(rhs:Number)(implicit c:ConvertableFrom[A]): Number = c.toNumber(lhs) /~ rhs
   def %(rhs:Number)(implicit c:ConvertableFrom[A]): Number = c.toNumber(lhs) % rhs
   def /%(rhs:Number)(implicit c:ConvertableFrom[A]): (Number, Number) = c.toNumber(lhs) /% rhs
+}
+
+final class GcdOps[A](lhs:A)(implicit ev:Gcd[A]) {
+  def gcd(rhs:A): A = macro Ops.binop[A, A]
+  def lcm(rhs:A): A = macro Ops.binop[A, A]
 }
 
 final class LiteralIntEuclideanRingOps(val lhs: Int) extends AnyVal {

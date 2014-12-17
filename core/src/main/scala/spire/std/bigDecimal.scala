@@ -23,6 +23,7 @@ trait BigDecimalIsField extends Field[BigDecimal] {
   def quot(a: BigDecimal, b: BigDecimal) = a.quot(b)
   def mod(a: BigDecimal, b: BigDecimal) = a % b
   override def quotmod(a: BigDecimal, b: BigDecimal) = a /% b
+  def lcm(a: BigDecimal, b: BigDecimal): BigDecimal = (a / gcd(a, b)) * b
   def gcd(a: BigDecimal, b: BigDecimal): BigDecimal = {
     import java.math.BigInteger
 

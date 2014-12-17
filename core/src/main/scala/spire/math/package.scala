@@ -12,7 +12,7 @@ import scala.math.ScalaNumericConversions
 
 import BigDecimal.RoundingMode.{FLOOR, HALF_UP, CEILING}
 
-import spire.algebra.{EuclideanRing, Field, IsReal, NRoot, Order, Signed, Trig}
+import spire.algebra.{EuclideanRing, Field, Gcd, IsReal, NRoot, Order, Signed, Trig}
 import spire.std.bigDecimal._
 import spire.syntax.nroot._
 
@@ -303,18 +303,19 @@ package object math {
   }
 
   final def gcd(a: BigInt, b: BigInt): BigInt = a.gcd(b)
-  final def gcd[A](x: A, y: A)(implicit ev: EuclideanRing[A]): A = ev.gcd(x, y)
-  final def gcd[A](xs: Seq[A])(implicit ev: EuclideanRing[A]): A =
-    xs.foldLeft(ev.zero) { (x, y) => gcd(y, x) }
-  final def gcd[A](x: A, y: A, z: A, rest: A*)(implicit ev: EuclideanRing[A]): A =
-    gcd(gcd(gcd(x, y), z), gcd(rest))
+  final def gcd[A](x: A, y: A)(implicit ev: Gcd[A]): A = ev.gcd(x, y)
+  final def gcd[A](xs: Seq[A])(implicit ev: Gcd[A]): A =
+    xs.reduceLeft(ev.gcd)
+  final def gcd[A](x: A, y: A, z: A, rest: A*)(implicit ev: Gcd[A]): A =
+    if (rest.isEmpty) ev.gcd(ev.gcd(x, y), z)
+    else ev.gcd(ev.gcd(ev.gcd(x, y), z), gcd(rest))
 
   /**
    * lcm
    */
   final def lcm(x: Long, y: Long): Long = (x / gcd(x, y)) * y
   final def lcm(a: BigInt, b: BigInt): BigInt = (a / a.gcd(b)) * b
-  final def lcm[A](x: A, y: A)(implicit ev: EuclideanRing[A]): A = ev.lcm(x, y)
+  final def lcm[A](x: A, y: A)(implicit ev: Gcd[A]): A = ev.lcm(x, y)
 
   /**
    * min

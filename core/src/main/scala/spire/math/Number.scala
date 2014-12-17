@@ -3,7 +3,7 @@ package spire.math
 import scala.math.{ScalaNumber, ScalaNumericConversions}
 import java.lang.Math
 
-import spire.algebra.{Eq, EuclideanRing, Field, IsReal, NRoot, Order, Ring, Signed, Trig}
+import spire.algebra.{Eq, EuclideanRing, Field, Gcd, IsReal, NRoot, Order, Ring, Signed, Trig}
 import spire.std.bigDecimal._
 import spire.syntax.isReal._
 import spire.syntax.nroot._
@@ -587,11 +587,12 @@ private[math] trait NumberIsRing extends Ring[Number] {
   override def fromInt(n: Int): Number = Number(n)
 }
 
-private[math] trait NumberIsEuclideanRing extends EuclideanRing[Number] with NumberIsRing {
+private[math] trait NumberIsEuclideanRing extends EuclideanRing[Number] with Gcd[Number] with NumberIsRing {
   def quot(a:Number, b:Number) = a / b
   def mod(a:Number, b:Number) = a % b
   override def quotmod(a:Number, b:Number) = a /% b
-  def gcd(a: Number, b: Number): Number = euclid(a, b)(Eq[Number])
+  def gcd(a: Number, b: Number): Number = euclid(a, b)(Eq[Number], this)
+  def lcm(a: Number, b: Number): Number = (a / gcd(a, b)) * b
 }
 
 private[math] trait NumberIsField extends Field[Number] with NumberIsEuclideanRing {

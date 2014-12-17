@@ -228,8 +228,9 @@ trait BaseSyntaxTest {
       ((42 * a) == Ring[A].times(Ring[A].fromInt(42), a))
   }
 
-  def testEuclideanRingSyntax[A: EuclideanRing](a: A, b: A) = {
+  def testEuclideanRingSyntax[A: EuclideanRing: Gcd](a: A, b: A) = {
     import spire.syntax.euclideanRing._
+    import spire.syntax.gcd._
     ((a + b) == Ring[A].plus(a, b)) &&
       ((a - b) == Ring[A].minus(a, b)) &&
       (-a == Ring[A].negate(a)) &&
@@ -239,8 +240,8 @@ trait BaseSyntaxTest {
       ((a /% b) == EuclideanRing[A].quotmod(a, b)) &&
       ((a ** 2) == Ring[A].pow(a, 2)) &&
       ((a pow 2) == Ring[A].pow(a, 2)) &&
-      ((a gcd b) == EuclideanRing[A].gcd(a, b)) &&
-      ((a lcm b) == EuclideanRing[A].lcm(a, b)) &&
+      ((a gcd b) == Gcd[A].gcd(a, b)) &&
+    ((a lcm b) == Gcd[A].lcm(a, b)) &&
       ((a + 42) == Ring[A].plus(a, Ring[A].fromInt(42))) &&
       ((42 + a) == Ring[A].plus(Ring[A].fromInt(42), a)) &&
       ((a - 42) == Ring[A].minus(a, Ring[A].fromInt(42))) &&
@@ -265,8 +266,8 @@ trait BaseSyntaxTest {
       ((a / b) == Field[A].div(a, b)) &&
       ((a ** 2) == Ring[A].pow(a, 2)) &&
       ((a pow 2) == Ring[A].pow(a, 2)) &&
-      ((a gcd b) == EuclideanRing[A].gcd(a, b)) &&
-      ((a lcm b) == EuclideanRing[A].lcm(a, b)) &&
+      // ((a gcd b) == Gcd[A].gcd(a, b)) &&
+      // ((a lcm b) == Gcd[A].lcm(a, b)) &&
       ((a + 42) == Ring[A].plus(a, Ring[A].fromInt(42))) &&
       ((42 + a) == Ring[A].plus(Ring[A].fromInt(42), a)) &&
       ((a - 42) == Ring[A].minus(a, Ring[A].fromInt(42))) &&

@@ -1,8 +1,8 @@
 package spire.std
 
-import spire.algebra.{EuclideanRing, IsIntegral, MetricSpace, NRoot, Order, Signed}
+import spire.algebra.{EuclideanRing, Gcd, IsIntegral, MetricSpace, NRoot, Order, Signed}
 
-trait BigIntIsEuclideanRing extends EuclideanRing[BigInt] {
+trait BigIntIsEuclideanRing extends EuclideanRing[BigInt] with Gcd[BigInt] {
   override def minus(a:BigInt, b:BigInt): BigInt = a - b
   def negate(a:BigInt): BigInt = -a
   val one: BigInt = BigInt(1)
@@ -16,6 +16,7 @@ trait BigIntIsEuclideanRing extends EuclideanRing[BigInt] {
   def quot(a:BigInt, b:BigInt) = a / b
   def mod(a:BigInt, b:BigInt) = a % b
   override def quotmod(a:BigInt, b:BigInt) = a /% b
+  def lcm(a:BigInt, b:BigInt) = (a / a.gcd(b)) * b
   def gcd(a:BigInt, b:BigInt) = a.gcd(b)
 }
 

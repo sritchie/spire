@@ -3,6 +3,7 @@ package lattice
 
 import spire.syntax.order._
 import spire.syntax.euclideanRing._
+import spire.syntax.gcd._
 
 import scala.{specialized => sp}
 
@@ -20,7 +21,7 @@ object Lattice {
   def min[@sp(Boolean, Byte, Short, Int, Long, Float, Double) A](implicit ev: Order[A]): Lattice[A] =
     new MinMaxLattice[A]
 
-  def gcd[@sp(Byte, Short, Int, Long) A](implicit ev: EuclideanRing[A]): Lattice[A] =
+  def gcd[@sp(Byte, Short, Int, Long) A](implicit ev: Gcd[A]): Lattice[A] =
     new GcdLcmLattice[A]
 }
 
@@ -29,7 +30,7 @@ class MinMaxLattice[@sp(Boolean, Byte, Short, Int, Long, Float, Double) A: Order
   def join(lhs: A, rhs: A): A = lhs max rhs
 }
 
-class GcdLcmLattice[@sp(Byte, Short, Int, Long) A: EuclideanRing] extends Lattice[A] {
+class GcdLcmLattice[@sp(Byte, Short, Int, Long) A: Gcd] extends Lattice[A] {
   def meet(lhs: A, rhs: A): A = lhs gcd rhs
   def join(lhs: A, rhs: A): A = lhs lcm rhs
 }
