@@ -34,4 +34,108 @@ package object algebra {
 
   type Sign = _root_.algebra.number.Sign
   val Sign = _root_.algebra.number.Sign
+
+  type AdditiveSemigroup[A] = _root_.algebra.ring.AdditiveSemigroup[A]
+  val AdditiveSemigroup = _root_.algebra.ring.AdditiveSemigroup
+  
+  type AdditiveCSemigroup[A] = _root_.algebra.ring.AdditiveCommutativeSemigroup[A]
+  val AdditiveCSemigroup = _root_.algebra.ring.AdditiveCommutativeSemigroup
+  
+  type AdditiveMonoid[A] = _root_.algebra.ring.AdditiveMonoid[A]
+  val AdditiveMonoid = _root_.algebra.ring.AdditiveMonoid
+  
+  type AdditiveCMonoid[A] = _root_.algebra.ring.AdditiveCommutativeMonoid[A]
+  val AdditiveCMonoid = _root_.algebra.ring.AdditiveCommutativeMonoid
+  
+  type AdditiveGroup[A] = _root_.algebra.ring.AdditiveGroup[A]
+  val AdditiveGroup = _root_.algebra.ring.AdditiveGroup
+  
+  type AdditiveAbGroup[A] = _root_.algebra.ring.AdditiveCommutativeGroup[A]
+  val AdditiveAbGroup = _root_.algebra.ring.AdditiveCommutativeGroup
+
+  object Additive {
+    def apply[A](s: Semigroup[A]): AdditiveSemigroup[A] = new AdditiveSemigroup[A] {
+      def plus(x: A, y: A): A = s.combine(x, y)
+    }
+
+    def apply[A](s: CSemigroup[A]): AdditiveCSemigroup[A] = new AdditiveCSemigroup[A] {
+      def plus(x: A, y: A): A = s.combine(x, y)
+    }
+
+    def apply[A](m: Monoid[A]): AdditiveMonoid[A] = new AdditiveMonoid[A] {
+      def plus(x: A, y: A): A = m.combine(x, y)
+      def zero = m.empty
+    }
+
+    def apply[A](m: CMonoid[A]): AdditiveCMonoid[A] = new AdditiveCMonoid[A] {
+      def plus(x: A, y: A): A = m.combine(x, y)
+      def zero = m.empty
+    }
+
+    def apply[A](g: Group[A]): AdditiveGroup[A] = new AdditiveGroup[A] {
+      def plus(x: A, y: A): A = g.combine(x, y)
+      override def minus(x: A, y: A): A = g.combine(x, g.inverse(y))
+      def zero: A = g.empty
+      def negate(x: A): A = g.inverse(x)
+    }
+
+    def apply[A](g: AbGroup[A]): AdditiveAbGroup[A] = new AdditiveAbGroup[A] {
+      def plus(x: A, y: A): A = g.combine(x, y)
+      override def minus(x: A, y: A): A = g.combine(x, g.inverse(y))
+      def zero: A = g.empty
+      def negate(x: A): A = g.inverse(x)
+    }
+  }
+
+  type MultiplicativeSemigroup[A] = _root_.algebra.ring.MultiplicativeSemigroup[A]
+  val MultiplicativeSemigroup = _root_.algebra.ring.MultiplicativeSemigroup
+  
+  type MultiplicativeCSemigroup[A] = _root_.algebra.ring.MultiplicativeCommutativeSemigroup[A]
+  val MultiplicativeCSemigroup = _root_.algebra.ring.MultiplicativeCommutativeSemigroup
+  
+  type MultiplicativeMonoid[A] = _root_.algebra.ring.MultiplicativeMonoid[A]
+  val MultiplicativeMonoid = _root_.algebra.ring.MultiplicativeMonoid
+  
+  type MultiplicativeCMonoid[A] = _root_.algebra.ring.MultiplicativeCommutativeMonoid[A]
+  val MultiplicativeCMonoid = _root_.algebra.ring.MultiplicativeCommutativeMonoid
+  
+  type MultiplicativeGroup[A] = _root_.algebra.ring.MultiplicativeGroup[A]
+  val MultiplicativeGroup = _root_.algebra.ring.MultiplicativeGroup
+  
+  type MultiplicativeAbGroup[A] = _root_.algebra.ring.MultiplicativeCommutativeGroup[A]
+  val MultiplicativeAbGroup = _root_.algebra.ring.MultiplicativeCommutativeGroup
+
+  object Multiplicative {
+    def apply[A](s: Semigroup[A]): MultiplicativeSemigroup[A] = new MultiplicativeSemigroup[A] {
+      def times(x: A, y: A): A = s.combine(x, y)
+    }
+
+    def apply[A](s: CSemigroup[A]): MultiplicativeCSemigroup[A] = new MultiplicativeCSemigroup[A] {
+      def times(x: A, y: A): A = s.combine(x, y)
+    }
+
+    def apply[A](m: Monoid[A]): MultiplicativeMonoid[A] = new MultiplicativeMonoid[A] {
+      def times(x: A, y: A): A = m.combine(x, y)
+      def one = m.empty
+    }
+
+    def apply[A](m: CMonoid[A]): MultiplicativeCMonoid[A] = new MultiplicativeCMonoid[A] {
+      def times(x: A, y: A): A = m.combine(x, y)
+      def one = m.empty
+    }
+
+    def apply[A](g: Group[A]): MultiplicativeGroup[A] = new MultiplicativeGroup[A] {
+      def times(x: A, y: A): A = g.combine(x, y)
+      def div(x: A, y: A): A = g.combine(x, g.inverse(y))
+      def one: A = g.empty
+      override def reciprocal(x: A): A = g.inverse(x)
+    }
+
+    def apply[A](g: AbGroup[A]): MultiplicativeAbGroup[A] = new MultiplicativeAbGroup[A] {
+      def times(x: A, y: A): A = g.combine(x, y)
+      def div(x: A, y: A): A = g.combine(x, g.inverse(y))
+      def one: A = g.empty
+      override def reciprocal(x: A): A = g.inverse(x)
+    }
+  }
 }

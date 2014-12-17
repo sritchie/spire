@@ -17,7 +17,7 @@ import scala.collection.generic.CanBuildFrom
  * An example of a normed vector space is R^n equipped with the euclidean
  * vector length as the norm.
  */
-trait NormedVectorSpace[V, @spec(Int, Long, Float, Double) F] extends Any with VectorSpace[V, F] with MetricSpace[V, F] {
+trait NormedVectorSpace[V, @spec(Int, Long, Float, Double) F] extends VectorSpace[V, F] with MetricSpace[V, F] {
   def norm(v: V): F
 
   def normalize(v: V): V = divr(v, norm(v))

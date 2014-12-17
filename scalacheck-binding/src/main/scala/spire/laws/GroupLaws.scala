@@ -82,19 +82,19 @@ trait GroupLaws[A] extends Laws {
   def additiveSemigroup(implicit A: AdditiveSemigroup[A]) = new AdditiveProperties(
     base = semigroup(A.additive),
     parent = None,
-    "sumn(a, 1) === a" → forAll((a: A) =>
-      A.sumn(a, 1) === a
+    "sumN(a, 1) === a" → forAll((a: A) =>
+      A.sumN(a, 1) === a
     ),
-    "combinen(a, 2) === a + a" → forAll((a: A) =>
-      A.sumn(a, 2) === (a + a)
+    "sumN(a, 2) === a + a" → forAll((a: A) =>
+      A.sumN(a, 2) === (a + a)
     )
   )
 
   def additiveMonoid(implicit A: AdditiveMonoid[A]) = new AdditiveProperties(
     base = monoid(A.additive),
     parent = Some(additiveSemigroup),
-    "sumn(a, 0) === zero" → forAll((a: A) =>
-      A.sumn(a, 0) === A.zero
+    "sumN(a, 0) === zero" → forAll((a: A) =>
+      A.sumN(a, 0) === A.zero
     ),
     "sum(Nil) === zero" → forAll((a: A) =>
       A.sum(Nil) === A.zero
