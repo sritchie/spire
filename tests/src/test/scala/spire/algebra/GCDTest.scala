@@ -6,6 +6,7 @@ import spire.std.long._
 import spire.std.float._
 import spire.std.double._
 import spire.syntax.euclideanRing._
+import spire.syntax.gcd._
 import spire.syntax.isReal._
 
 import scala.reflect.ClassTag
@@ -28,12 +29,12 @@ class GCDTest extends FunSuite with Checkers {
     d <- arbitrary[Long] if d != 0
   } yield Rational(n, d))
 
-  def testGcd[A: EuclideanRing: IsReal: ClassTag](x: A, y: A): Boolean = {
+  def testGcd[A: EuclideanRing: Gcd: IsReal: ClassTag](x: A, y: A): Boolean = {
     (x == Ring[A].zero || y == Ring[A].zero) || {
-      val den = spire.math.gcd(x, y)
-      val x0 = x /~ den
-      val y0 = y /~ den
-      x0.isWhole && y0.isWhole && (spire.math.gcd(x0, y0) == Ring[A].one)
+      val d = x gcd y
+      val x0 = x /~ d
+      val y0 = y /~ d
+      x0.isWhole && y0.isWhole && (x0 gcd y0) == Ring[A].one
     }
   }
 
