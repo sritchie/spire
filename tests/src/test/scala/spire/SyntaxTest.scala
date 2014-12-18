@@ -48,7 +48,7 @@ class SyntaxTest extends FunSuite with Checkers with BaseSyntaxTest {
   test("IsReal syntax")(check(forAll { (a: Double) => testIsRealSyntax(a) }))
   test("Semigroup syntax")(check(forAll { (a: String, b: String) => testSemigroupSyntax(a, b) }))
   test("Monoid syntax")(check(forAll { (a: String, b: String) => testMonoidSyntax(a, b) }))
-  //test("Group syntax")(check(forAll { (a: Int, b: Int) => testMonoidSyntax(a, b)(Group.additive[Int]) })) //FIXME
+  test("Group syntax")(check(forAll { (a: Int, b: Int) => testMonoidSyntax(a, b)(Group.additive[Int]) }))
   test("AdditiveSemigroup syntax")(check(forAll { (a: Int, b: Int) => testAdditiveSemigroupSyntax(a, b) }))
   test("AdditiveMonoid syntax")(check(forAll { (a: Int, b: Int) => testAdditiveMonoidSyntax(a, b) }))
   test("AdditiveGroup syntax")(check(forAll { (a: Int, b: Int) => testAdditiveGroupSyntax(a, b) }))
